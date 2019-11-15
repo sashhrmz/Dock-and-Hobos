@@ -17,7 +17,7 @@ public class Tunnel {
         currentShips.add(new Ship(Type.BREAD, Size.MEDIUM));
         currentShips.add(new Ship(Type.MAYONNAISE, Size.MEDIUM));
         currentShips.add(new Ship(Type.SAUSAGE, Size.MEDIUM));
-        countOfShips = 0;
+        countOfShips = 3;
     }
 
     synchronized void add(Ship ship) {
@@ -28,11 +28,16 @@ public class Tunnel {
         }
     }
 
-    synchronized Ship get() {
-        Ship ship = currentShips.get(0);
-        currentShips.remove(0);
+    synchronized Ship get(int index) throws MyException {
+        if(countOfShips.equals(0)) {
+            throw new MyException("There is no ships in tunnel");
+        }
+        Ship ship = currentShips.get(index);
+        currentShips.remove(index);
         --countOfShips;
         return ship;
     }
+
+    public ArrayList<Ship> getShips() { return currentShips; }
 
 }
