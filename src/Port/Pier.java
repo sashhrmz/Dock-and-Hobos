@@ -8,12 +8,20 @@ public class Pier extends Thread {
     private Tunnel tunnel;
     private Ship ship;
     private boolean isThereShip;
+    private Integer count;
 
     public Pier(Type type, Tunnel tunnel) {
         this.tunnel = tunnel;
         this.type = type;
         this.isThereShip = false;
+        count = 0;
     }
+
+    public void get() { --count; }
+
+    public Type getType() { return type; }
+
+    public boolean checkToSteal() { return count > 0; }
 
     @Override
     public void run() {
@@ -35,9 +43,11 @@ public class Pier extends Thread {
 
                 while (ship.getCount() > 0) {
                     ship.unloadProduct(5);
+                    count += 5;
                     System.out.println("Five elements of " + ship.getType().toString() +
                             " is unloaded. There is " + ship.getCount().toString() + " out of "
-                            + ship.getSize().toString() + " left to unload.");
+                            + ship.getSize().toString() + " left to unload. There is " + count.toString()
+                            + " " + ship.getType() + " in the pier.");
                     try {
                         sleep(1000);
                     } catch (InterruptedException e) {

@@ -8,7 +8,6 @@ import java.util.Random;
 
 public class Generator extends Thread {
     private Tunnel tunnel;
-    private Ship ship;
 
     public Generator(Tunnel tunnel) {
         this.tunnel = tunnel;
@@ -19,11 +18,12 @@ public class Generator extends Thread {
         while(true) {
             Type type = generateType();
             Size size = generateSize();
-            ship = new Ship(type, size);
+            Ship ship = new Ship(type, size);
             tunnel.add(ship);
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
