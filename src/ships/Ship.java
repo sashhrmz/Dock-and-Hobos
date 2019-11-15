@@ -11,7 +11,7 @@ public class Ship {
         this.count = size.getSize();
     }
 
-    void unloadProduct(int count) {
+    public void unloadProduct(int count) {
         if(this.count + 1 > count) {
             this.count -= count;
         } else {
