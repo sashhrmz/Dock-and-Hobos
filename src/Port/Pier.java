@@ -11,10 +11,6 @@ public class Pier extends Thread {
     @Override
     public void run() {
         while(true) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-            }
             ship = tunnel.get();
             System.out.println("The " + ship.getSize().toString() + " " + ship.getType().toString() +
                     " ship swam to the pier.");
@@ -29,6 +25,7 @@ public class Pier extends Thread {
                 } catch (InterruptedException e) {
                 }
             }
+            System.out.println("The " + ship.getType().toString() + " " + ship.getSize().toString() + " ship left.");
         }
     }
 

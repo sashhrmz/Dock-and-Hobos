@@ -22,7 +22,7 @@ public class Generator extends Thread {
             ship = new Ship(type, size);
             tunnel.add(ship);
             try {
-                Thread.sleep(500);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
             }
         }

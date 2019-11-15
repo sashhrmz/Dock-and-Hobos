@@ -9,8 +9,12 @@ public class Model {
     public static void main(String[] args) {
         Tunnel tunnel = new Tunnel();
         Generator generator = new Generator(tunnel);
-        Pier pier = new Pier(tunnel);
+        Pier firstPier = new Pier(tunnel);
+        Pier secondPier = new Pier(tunnel);
+        Pier thirdPier = new Pier(tunnel);
         generator.start();
-        pier.start();
+        firstPier.start();
+        secondPier.start();
+        thirdPier.start();
     }
 }
