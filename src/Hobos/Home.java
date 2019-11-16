@@ -1,37 +1,67 @@
 package Hobos;
 
+import Port.Pier;
 import ships.Type;
 
 import java.util.ArrayList;
 
 public class Home extends Thread {
-    private ArrayList<Storage> storage;
+    private volatile ArrayList<Storage> storage;
+    private volatile ArrayList<Pier> piers;
 
-    public Home(ArrayList<Storage> storage) {
+    private volatile int counter;
+    private volatile int sleepCounter;
+
+    public Home(ArrayList<Storage> storage, ArrayList<Pier> piers) {
         this.storage = storage;
+        this.piers = piers;
+        counter = 0;
+        sleepCounter = 0;
     }
 
-    public synchronized void eat() {
 
-    }
-    
-    
-}
-
-class Storage {
-    private Type type;
-    private int count;
-
-    public Storage(Type type, int count) {
-        this.type = type;
-        this.count = count;
+    private void addToStorage(Type type) {
+        for(Storage storage : this.storage) {
+            if(storage.getType() == type) {
+                storage.add();
+            }
+        }
     }
 
-    public boolean checkCount() { return count > 8; }
+    public synchronized void stealing(Type type) throws InterruptedException {
+        ++counter;
+        if (counter < 3) {
+            wait();
+        } else if (counter < 9) {
+            for(Pier pier : piers) {
+                if(pier.getType() == type && pier.checkToSteal()) {
+                    pier.get();
+                    addToStorage(type);
+                    System.out.println("One " + type.toString() +
+                            " was stolen.");
+                }
+            }
+            sleep(3000);
+            System.out.println("Hobo bring the " + type.toString() + " to the storage");
+        }
+        if (counter == 8) {
+            notifyAll();
+            counter = 0;
+        }
+    }
 
-    public void makeSandwiches() { count -= 8; }
-
-    public int getCount() { return count; }
-
-    public Type getType() { return type; }
+    public synchronized void eat() throws InterruptedException {
+        ++sleepCounter;
+        if(sleepCounter < 8) {
+            wait();
+        } else {
+            storage.get(0).makeSandwiches();
+            storage.get(1).makeSandwiches();
+            storage.get(2).makeSandwiches();
+            sleep(1000);
+            System.out.println("Hobos ate. They are going to steal again.");
+            sleepCounter = 0;
+            notifyAll();
+        }
+    }
 }
