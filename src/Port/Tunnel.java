@@ -9,7 +9,6 @@ import java.util.ArrayList;
 public class Tunnel {
     private volatile ArrayList<Ship> currentShips;
     private final Integer maxCountOfShips = 5;
-    private final Integer minCountOfShips = 0;
     private volatile Integer countOfShips;
 
     public Tunnel() {

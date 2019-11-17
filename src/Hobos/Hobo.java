@@ -1,50 +1,66 @@
 package Hobos;
 
+import Port.Pier;
 import ships.Type;
 
 import java.util.ArrayList;
 
 public class Hobo extends Thread {
-    private ArrayList<Storage> storage;
+    private volatile ArrayList<Pier> piers;
     private Type request;
+    private volatile Task task;
     private Home home;
 
-    public Hobo(ArrayList<Storage> storage, Home home) {
+    public Hobo(ArrayList<Pier> piers, Home home) {
         this.home = home;
-        this.storage = storage;
+        this.piers = piers;
+        task = Task.NONE;
     }
-
-    public void setRequest() {
-        Type type = Type.SAUSAGE;
-        for(Storage storage : this.storage) {
-            if(!storage.checkCount()) {
-                type = storage.getType();
-                break;
-            }
-        }
-        request = type;
-    }
-
 
     @Override
     public void run() {
         while (true) {
-            setRequest();
-            try {
-                home.stealing(request);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if(task == Task.NONE) {
+                task = home.whatIamGonnaDo();
+            } else if(task == Task.COOK) {
+                cook();
+            } else if(task == Task.STEAL) {
+                request = home.setRequest();
+                steal();
+            } else if(task == Task.EAT) {
+                home.eat();
+                task = Task.NONE;
             }
-            if (storage.get(0).checkCount() &&
-                    storage.get(1).checkCount() &&
-                    storage.get(2).checkCount()) {
+
+        }
+    }
+
+    public void setTask(Task task) {
+        System.out.println("READY TO EAT");
+        this.task = task;
+    }
+
+    public synchronized void steal() {
+        for(Pier pier : piers) {
+            if (pier.getType() == request && pier.checkToSteal()) {
+                pier.get();
+                home.incStorage(request);
+                System.out.println("One " + request.toString() +
+                        " was stolen.");
                 try {
-                    home.eat();
+                    sleep(3000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
         }
+    }
+
+    public synchronized void cook() {
+            boolean isCooked = home.tryMakeSandwich();
+            if (isCooked) {
+               home.callHobosForSupper();
+            }
     }
 
 }

@@ -5,6 +5,7 @@ import Port.*;
 import ships.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Model {
 
@@ -22,25 +23,19 @@ public class Model {
         piers.add(sausagePier);
         piers.add(mayonnaisePier);
 
-        Storage sausageStorage = new Storage(Type.SAUSAGE);
-        Storage breadStorage = new Storage(Type.BREAD);
-        Storage mayonnaiseStorage = new Storage(Type.MAYONNAISE);
+        Home home = new Home();
 
-        ArrayList<Storage> storage = new ArrayList<Storage>();
-        storage.add(sausageStorage);
-        storage.add(mayonnaiseStorage);
-        storage.add(breadStorage);
+        Hobo hobo1 = new Hobo(piers, home);
+        Hobo hobo2 = new Hobo(piers, home);
+        Hobo hobo3 = new Hobo(piers, home);
+        Hobo hobo5 = new Hobo(piers, home);
+        Hobo hobo4 = new Hobo(piers, home);
+        Hobo hobo6 = new Hobo(piers, home);
+        Hobo hobo7 = new Hobo(piers, home);
+        Hobo hobo8 = new Hobo(piers, home);
+        ArrayList<Hobo> hobos = new ArrayList<Hobo>(List.of(hobo1, hobo2, hobo3, hobo4, hobo5, hobo6, hobo7, hobo8));
 
-        Home home = new Home(storage, piers);
-
-        Hobo hobo1 = new Hobo(storage, home);
-        Hobo hobo2 = new Hobo(storage, home);
-        Hobo hobo3 = new Hobo(storage, home);
-        Hobo hobo4 = new Hobo(storage, home);
-        Hobo hobo5 = new Hobo(storage, home);
-        Hobo hobo6 = new Hobo(storage, home);
-        Hobo hobo7 = new Hobo(storage, home);
-        Hobo hobo8 = new Hobo(storage, home);
+        home.setHobos(hobos);
 
         generator.start();
         breadPier.start();
