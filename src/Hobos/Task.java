@@ -4,5 +4,5 @@ public enum Task {
     EAT,
     STEAL,
     COOK,
-    NONE
+    NONE,
 }

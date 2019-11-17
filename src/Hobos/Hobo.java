@@ -31,22 +31,18 @@ public class Hobo extends Thread {
                 home.eat();
                 task = Task.NONE;
             }
-
         }
     }
 
-    public void setTask(Task task) {
-        System.out.println("READY TO EAT");
-        this.task = task;
-    }
+    public void setTask(Task task) { this.task = task; }
 
     public synchronized void steal() {
         for(Pier pier : piers) {
             if (pier.getType() == request && pier.checkToSteal()) {
                 pier.get();
-                home.incStorage(request);
                 System.out.println("One " + request.toString() +
                         " was stolen.");
+                home.incStorage(request);
                 try {
                     sleep(3000);
                 } catch (InterruptedException e) {
@@ -62,5 +58,4 @@ public class Hobo extends Thread {
                home.callHobosForSupper();
             }
     }
-
 }

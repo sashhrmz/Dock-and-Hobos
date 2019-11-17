@@ -68,7 +68,6 @@ public class Home extends Thread {
     public synchronized void eat() {
         ++eaters;
          try {
-             System.out.println(eaters);
              if (eaters == 8) {
                  sleep(1000);
                  notifyAll();
@@ -94,7 +93,4 @@ public class Home extends Thread {
         }
         return Task.STEAL;
     }
-
-
-
 }
