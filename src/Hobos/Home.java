@@ -23,7 +23,6 @@ public class Home extends Thread {
 
     public void setHobos(ArrayList<Hobo> hobos) {
         this.hobos = hobos;
-        System.out.println(hobos.size());
     }
 
     public synchronized Type setRequest() {
@@ -71,6 +70,7 @@ public class Home extends Thread {
              if (eaters == 8) {
                  sleep(1000);
                  notifyAll();
+                 System.out.println("Hobos ate. ");
                  eaters = 0;
              } else {
                  wait();

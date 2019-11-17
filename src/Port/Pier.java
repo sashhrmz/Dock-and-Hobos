@@ -8,7 +8,7 @@ public class Pier extends Thread {
     private Tunnel tunnel;
     private Ship ship;
     private boolean isThereShip;
-    private Integer count;
+    private volatile Integer count;
 
     public Pier(Type type, Tunnel tunnel) {
         this.tunnel = tunnel;
@@ -17,7 +17,7 @@ public class Pier extends Thread {
         count = 0;
     }
 
-    public void get() { --count; }
+    public synchronized void get() { --count; }
 
     public Type getType() { return type; }
 
